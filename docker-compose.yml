@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  bods_ingester_gleif:
+    image: bods_ingester_gleif:latest
+    environment:
+      - BODS_PIPELINE
+      - BODS_PIPELINE_STAGE
+      - BODS_AWS_REGION
+      - BODS_AWS_ACCESS_KEY_ID
+      - BODS_AWS_SECRET_ACCESS_KEY
+      - ELASTICSEARCH_HOST
+      - ELASTICSEARCH_PORT
+      - ELASTICSEARCH_PROTOCOL
+    restart: always
+    depends_on:
+      - bods_ingester_gleif_es
+
+  bods_ingester_gleif_es:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
+    environment:
+      - 'discovery.type=single-node'
+      - 'cluster.name=register-elasticsearch'
+      - 'bootstrap.memory_lock=true'
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+      - 'xpack.security.enabled=false'
+    ports:
+      - 9200:9200
