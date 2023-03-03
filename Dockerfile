@@ -7,7 +7,5 @@ RUN pip install -r requirements.txt
 
 COPY bin /app/bin/
 COPY tests /app/tests/
-COPY run_stage.py /app/
-COPY setup_indexes.py /app/
 
-CMD ["python", "run_stage.py"]
+CMD ["bin/run]
