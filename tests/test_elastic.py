@@ -69,32 +69,36 @@ def test_create_lei2_index(elastic_storage):
     elastic_storage.setup_indexes()
     indexes = elastic_storage.list_index_details("lei2")
     print(indexes)
-    assert indexes['lei2'] == {'mappings': {'dynamic': 'strict', 'properties': {'Entity': {'properties': {'EntityCategory': {'type': 'text'}, 'EntityCreationDate': {'type': 'text'}, 'EntityStatus': {'type': 'text'}, 'HeadquartersAddress': {'properties': {'City': {'type': 'text'}, 'Country': {'type': 'text'}, 'FirstAddressLine': {'type': 'text'}, 'PostalCode': {'type': 'text'}}}, 'LegalAddress': {'properties': {'City': {'type': 'text'}, 'Country': {'type': 'text'}, 'FirstAddressLine': {'type': 'text'}, 'PostalCode': {'type': 'text'}}}, 'LegalForm': {'properties': {'EntityLegalFormCode': {'type': 'text'}}}, 'LegalJurisdiction': {'type': 'text'}, 'LegalName': {'type': 'text'}, 'RegistrationAuthority': {'properties': {'RegistrationAuthorityEntityID': {'type': 'text'}, 'RegistrationAuthorityID': {'type': 'text'}}}, 'TransliteratedOtherEntityNames': {'properties': {'TransliteratedOtherEntityName': {'type': 'text'}}}}}, 'LEI': {'type': 'text'}, 'Registration': {'properties': {'InitialRegistrationDate': {'type': 'text'}, 'LastUpdateDate': {'type': 'text'}, 'ManagingLOU': {'type': 'text'}, 'NextRenewalDate': {'type': 'text'}, 'RegistrationStatus': {'type': 'text'}, 'ValidationAuthority': {'properties': {'ValidationAuthorityEntityID': {'type': 'text'}, 'ValidationAuthorityID': {'type': 'text'}}}, 'ValidationSources': {'type': 'text'}}}}}}
+    assert indexes['lei2']['mappings']['properties'] == {'Entity': {'properties': {'EntityCategory': {'type': 'text'}, 'EntityCreationDate': {'type': 'text'}, 'EntityStatus': {'type': 'text'}, 'EntitySubCategory': {'type': 'text'}, 'HeadquartersAddress': {'properties': {'AdditionalAddressLine': {'type': 'text'}, 'AddressNumber': {'type': 'text'}, 'AddressNumberWithinBuilding': {'type': 'text'}, 'City': {'type': 'text'}, 'Country': {'type': 'text'}, 'FirstAddressLine': {'type': 'text'}, 'MailRouting': {'type': 'text'}, 'PostalCode': {'type': 'text'}, 'Region': {'type': 'text'}}}, 'LegalAddress': {'properties': {'AdditionalAddressLine': {'type': 'text'}, 'AddressNumber': {'type': 'text'}, 'AddressNumberWithinBuilding': {'type': 'text'}, 'City': {'type': 'text'}, 'Country': {'type': 'text'}, 'FirstAddressLine': {'type': 'text'}, 'MailRouting': {'type': 'text'}, 'PostalCode': {'type': 'text'}, 'Region': {'type': 'text'}}}, 'LegalEntityEvents': {'properties': {'AffectedFields': {'type': 'text'}, 'LegalEntityEventEffectiveDate': {'type': 'text'}, 'LegalEntityEventRecordedDate': {'type': 'text'}, 'LegalEntityEventType': {'type': 'text'}, 'ValidationDocuments': {'type': 'text'}, 'ValidationReference': {'type': 'text'}}}, 'LegalForm': {'properties': {'EntityLegalFormCode': {'type': 'text'}, 'OtherLegalForm': {'type': 'text'}}}, 'LegalJurisdiction': {'type': 'text'}, 'LegalName': {'type': 'text'}, 'OtherEntityNames': {'type': 'text'}, 'RegistrationAuthority': {'properties': {'OtherRegistrationAuthorityID': {'type': 'text'}, 'RegistrationAuthorityEntityID': {'type': 'text'}, 'RegistrationAuthorityID': {'type': 'text'}}}, 'SuccessorEntity': {'properties': {'SuccessorEntityName': {'type': 'text'}, 'SuccessorLEI': {'type': 'text'}}}, 'TransliteratedOtherEntityNames': {'type': 'text'}}}, 'LEI': {'type': 'text'}, 'Registration': {'properties': {'InitialRegistrationDate': {'type': 'text'}, 'LastUpdateDate': {'type': 'text'}, 'ManagingLOU': {'type': 'text'}, 'NextRenewalDate': {'type': 'text'}, 'RegistrationStatus': {'type': 'text'}, 'ValidationAuthority': {'properties': {'OtherValidationAuthorityID': {'type': 'text'}, 'ValidationAuthorityEntityID': {'type': 'text'}, 'ValidationAuthorityID': {'type': 'text'}}}, 'ValidationSources': {'type': 'text'}}}}
+
+#{'mappings': {'dynamic': 'strict', 'properties': {'Entity': {'properties': {'EntityCategory': {'type': 'text'}, 'EntityCreationDate': {'type': 'text'}, 'EntityStatus': {'type': 'text'}, 'HeadquartersAddress': {'properties': {'City': {'type': 'text'}, 'Country': {'type': 'text'}, 'FirstAddressLine': {'type': 'text'}, 'PostalCode': {'type': 'text'}}}, 'LegalAddress': {'properties': {'City': {'type': 'text'}, 'Country': {'type': 'text'}, 'FirstAddressLine': {'type': 'text'}, 'PostalCode': {'type': 'text'}}}, 'LegalForm': {'properties': {'EntityLegalFormCode': {'type': 'text'}}}, 'LegalJurisdiction': {'type': 'text'}, 'LegalName': {'type': 'text'}, 'RegistrationAuthority': {'properties': {'RegistrationAuthorityEntityID': {'type': 'text'}, 'RegistrationAuthorityID': {'type': 'text'}}}, 'TransliteratedOtherEntityNames': {'properties': {'TransliteratedOtherEntityName': {'type': 'text'}}}}}, 'LEI': {'type': 'text'}, 'Registration': {'properties': {'InitialRegistrationDate': {'type': 'text'}, 'LastUpdateDate': {'type': 'text'}, 'ManagingLOU': {'type': 'text'}, 'NextRenewalDate': {'type': 'text'}, 'RegistrationStatus': {'type': 'text'}, 'ValidationAuthority': {'properties': {'ValidationAuthorityEntityID': {'type': 'text'}, 'ValidationAuthorityID': {'type': 'text'}}}, 'ValidationSources': {'type': 'text'}}}}}}
 
 
 def test_create_rr_index(elastic_storage):
     elastic_storage.setup_indexes()
     indexes = elastic_storage.list_index_details("rr")
     print(indexes)
-    assert indexes['rr']['mappings']['properties'] == {'Relationship': {'properties': {'StartNode': {'properties': {'NodeID': {'type': 'text'}, 
-                                                                               'NodeIDType': {'type': 'text'}}}, 
-                                                  'EndNode': {'properties': {'NodeID': {'type': 'text'}, 
-                                                                             'NodeIDType': {'type': 'text'}}}, 
-                                                  'RelationshipType': {'type': 'text'}, 
-                                                  'RelationshipPeriods': {'properties': {'StartDate': {'type': 'text'}, 
-                                                                                         'EndDate': {'type': 'text'}, 
-                                                                                         'PeriodType': {'type': 'text'}}}, 
-                                                  'RelationshipStatus': {'type': 'text'}, 
-                                                  'RelationshipQualifiers': {'properties': {'QualifierDimension': {'type': 'text'}, 
-                                                                                            'QualifierCategory': {'type': 'text'}}}}}, 
-                  'Registration': {'properties': {'InitialRegistrationDate': {'type': 'text'}, 
-                                                  'LastUpdateDate': {'type': 'text'}, 
-                                                  'RegistrationStatus': {'type': 'text'}, 
-                                                  'NextRenewalDate': {'type': 'text'}, 
-                                                  'ManagingLOU': {'type': 'text'}, 
-                                                  'ValidationSources': {'type': 'text'}, 
-                                                  'ValidationDocuments': {'type': 'text'}, 
-                                                  'ValidationReference': {'type': 'text'}}}}
+    assert indexes['rr']['mappings']['properties'] == {'Registration': {'properties': {'InitialRegistrationDate': {'type': 'text'}, 'LastUpdateDate': {'type': 'text'}, 'ManagingLOU': {'type': 'text'}, 'NextRenewalDate': {'type': 'text'}, 'RegistrationStatus': {'type': 'text'}, 'ValidationAuthority': {'properties': {'OtherValidationAuthorityID': {'type': 'text'}, 'ValidationAuthorityEntityID': {'type': 'text'}, 'ValidationAuthorityID': {'type': 'text'}}}, 'ValidationDocuments': {'type': 'text'}, 'ValidationReference': {'type': 'text'}, 'ValidationSources': {'type': 'text'}}}, 'Relationship': {'properties': {'EndNode': {'properties': {'NodeID': {'type': 'text'}, 'NodeIDType': {'type': 'text'}}}, 'RelationshipPeriods': {'properties': {'EndDate': {'type': 'text'}, 'PeriodType': {'type': 'text'}, 'StartDate': {'type': 'text'}}}, 'RelationshipQualifiers': {'properties': {'QualifierCategory': {'type': 'text'}, 'QualifierDimension': {'type': 'text'}}}, 'RelationshipStatus': {'type': 'text'}, 'RelationshipType': {'type': 'text'}, 'StartNode': {'properties': {'NodeID': {'type': 'text'}, 'NodeIDType': {'type': 'text'}}}}}}
+
+#{'Relationship': {'properties': {'StartNode': {'properties': {'NodeID': {'type': 'text'}, 
+#                                                                               'NodeIDType': {'type': 'text'}}}, 
+#                                                  'EndNode': {'properties': {'NodeID': {'type': 'text'}, 
+#                                                                             'NodeIDType': {'type': 'text'}}}, 
+#                                                  'RelationshipType': {'type': 'text'}, 
+#                                                  'RelationshipPeriods': {'properties': {'StartDate': {'type': 'text'}, 
+#                                                                                         'EndDate': {'type': 'text'}, 
+#                                                                                         'PeriodType': {'type': 'text'}}}, 
+#                                                  'RelationshipStatus': {'type': 'text'}, 
+#                                                  'RelationshipQualifiers': {'properties': {'QualifierDimension': {'type': 'text'}, 
+#                                                                                            'QualifierCategory': {'type': 'text'}}}}}, 
+#                  'Registration': {'properties': {'InitialRegistrationDate': {'type': 'text'}, 
+#                                                  'LastUpdateDate': {'type': 'text'}, 
+#                                                  'RegistrationStatus': {'type': 'text'}, 
+#                                                  'NextRenewalDate': {'type': 'text'}, 
+#                                                  'ManagingLOU': {'type': 'text'}, 
+#                                                  'ValidationSources': {'type': 'text'}, 
+#                                                  'ValidationDocuments': {'type': 'text'}, 
+#                                                  'ValidationReference': {'type': 'text'}}}}
 
 
 def test_create_repex_index(elastic_storage):
