@@ -1,0 +1,8 @@
+#!/usr/bin/env python3
+from bodspipelines.infrastructure.storage import ElasticStorage
+from bodspipelines.mappings.gleif import lei_properties, rr_properties, repex_properties, match_lei, match_rr, match_repex
+
+es = ElasticStorage(indexes={"lei2": {"properties": lei_properties, "match": match_lei},
+                             "rr": {"properties": rr_properties, "match": match_rr},
+                             "repex": {"properties": repex_properties, "match": match_repex}})
+es.setup_indexes()
