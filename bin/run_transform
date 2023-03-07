@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+import os
+from pathlib import Path
+
+def pipeline():
+    os.chdir('/app')
+    Path('data').mkdir(exist_ok=True)
+    from bodspipelines.pipelines import gleif
+    gleif.pipeline.process("transform")
+
+if __name__ == "__main__":
+    pipeline()
