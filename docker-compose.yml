@@ -13,6 +13,8 @@ services:
       - ELASTICSEARCH_PORT
       - ELASTICSEARCH_PROTOCOL
       - LOCAL_DATA_DIRECTORY
+    volumes:
+      - ./data:/app/data
     restart: always
     depends_on:
       - bods_ingester_gleif_es
