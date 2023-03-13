@@ -5,8 +5,8 @@ from pathlib import Path
 def pipeline():
     os.chdir('/app')
     Path('data').mkdir(exist_ok=True)
-    from bodspipelines.pipelines import gleif
-    gleif.pipeline.process("transform")
+    from bodspipelines.pipelines.gleif import config
+    config.pipeline.process("transform")
 
 if __name__ == "__main__":
     pipeline()
