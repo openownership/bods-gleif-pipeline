@@ -21,7 +21,7 @@ Storage between pipeline runs is achieved using Elasticsearch, which runs in the
 as the pipeline code. 
 
 The bulk of the pipeline code is contained within the [openownership/bodspipelines](https://github.com/openownership/bodspipelines) 
-repositoty, which is a shared library intended to . This repository contains the scripts and Docker
+repository, which is a shared library intended to . This repository contains the scripts and Docker
 container configuration neceassry to run the pipeline on an EC2 instance.
 
 ## Ingest Stage
