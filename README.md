@@ -1,4 +1,4 @@
-# bods-gleif-pipeline
+# BODS-GLEIF Pipeline
 
 Pipeline for producing beneficial ownership statements (BODS) data from data in the [Global Legal Entity Identifier Foundation (GLEIF)](https://www.gleif.org/) database.
 
@@ -40,8 +40,26 @@ statements.
 
 ## Requirements
 
+The pipeline is designed to be run on Amazon Web Services (AWS) infrastruture and has the following requirements:
+
 * t2.medium EC2 instance with at least 16GB of storage
 * 2 Kinesis streams to connect pipeline stages
 * Optionally Firehose delivery streams connecting data streams to S3 buckets
 
 ## Setup
+
+Create an EC2 instance (see requirements above), setup Kinesis streams for each pipeline stage to output to.	
+
+### Configuration
+
+Create a .env file with the environment variable below (also see .env.example file).
+ 
+```
+BODS_AWS_REGION=
+BODS_AWS_ACCESS_KEY_ID=
+BODS_AWS_SECRET_ACCESS_KEY=
+ELASTICSEARCH_HOST=bods_ingester_gleif_es
+ELASTICSEARCH_PORT=9200
+ELASTICSEARCH_PROTOCOL=http
+LOCAL_DATA_DIRECTORY=gleif
+```

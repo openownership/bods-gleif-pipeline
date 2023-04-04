@@ -4,8 +4,6 @@ services:
   bods_ingester_gleif:
     image: bods_ingester_gleif:latest
     environment:
-      - BODS_PIPELINE
-      - BODS_PIPELINE_STAGE
       - BODS_AWS_REGION
       - BODS_AWS_ACCESS_KEY_ID
       - BODS_AWS_SECRET_ACCESS_KEY
