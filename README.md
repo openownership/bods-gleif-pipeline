@@ -42,13 +42,15 @@ statements.
 
 The pipeline is designed to be run on Amazon Web Services (AWS) infrastruture and has the following requirements:
 
-* t2.medium EC2 instance with at least 16GB of storage
+* t2.medium EC2 instance with at least 20GB of storage
 * 2 Kinesis streams to connect pipeline stages
 * Optionally Firehose delivery streams connecting data streams to S3 buckets
 
 ## Setup
 
-Create an EC2 instance (see requirements above), setup Kinesis streams for each pipeline stage to output to.	
+Create an EC2 instance (see requirements above), setup Kinesis data streams for each 
+pipeline stage to output to, and optionally create Kinesis delivery streams to connected
+to output data to S3 buckets.	
 
 ### Configuration
 
@@ -63,3 +65,33 @@ ELASTICSEARCH_PORT=9200
 ELASTICSEARCH_PROTOCOL=http
 LOCAL_DATA_DIRECTORY=gleif
 ```
+
+### One-time Setup
+
+Run on EC2 instance:
+
+```
+bin/build
+bin/setup_indexes
+```
+
+### Ingest Pipeline Stage
+
+Run on EC2 instance:
+
+```
+bin/ingest
+```
+
+or
+
+```
+bin/transform
+```
+
+### Testing
+
+Note it is possible to run the pipeline on a local machine for tetsing purposes
+but this will degrade performance, possibly very significantly depending on the
+the bandwidth of the network connection between the machine and the data center
+where the Kinesis streams are hosted.
