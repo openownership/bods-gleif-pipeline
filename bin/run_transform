@@ -2,11 +2,17 @@
 import os
 from pathlib import Path
 
+def run(entry, stage):
+    start = time.time()
+    entry(stage)
+    end = time.time()
+    print("Execution time:", end - start)
+
 def pipeline():
     os.chdir('/app')
     Path('data').mkdir(exist_ok=True)
     from bodspipelines.pipelines.gleif import config
-    config.pipeline.process("transform")
+    run(config.pipeline.process, "transform")
 
 if __name__ == "__main__":
     pipeline()
