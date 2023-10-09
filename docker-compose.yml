@@ -11,11 +11,14 @@ services:
       - ELASTICSEARCH_PORT
       - ELASTICSEARCH_PROTOCOL
       - LOCAL_DATA_DIRECTORY
+      - REDIS_HOST
+      - REDIS_PORT
     volumes:
       - ./data:/app/data
     restart: always
     depends_on:
       - bods_ingester_gleif_es
+      - bods_ingester_gleif_redis
 
   bods_ingester_gleif_es:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
@@ -27,3 +30,11 @@ services:
       - 'xpack.security.enabled=false'
     ports:
       - 9200:9200
+
+  bods_ingester_gleif_redis:
+    image: redis:latest
+    command: redis-server --port 6380 --appendonly yes --protected-mode no
+    volumes:
+        - ./redis-data:/data
+    ports:
+      - "6380:6380"
