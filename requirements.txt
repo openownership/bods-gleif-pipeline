@@ -1,1 +1,1 @@
--e git+https://github.com/openownership/bodspipelines@performance_improvements#egg=bodspipelines
+-e git+https://github.com/openownership/bodspipelines@updates_handling#egg=bodspipelines
