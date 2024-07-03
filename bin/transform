@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-source env.sh; docker-compose run bods_ingester_gleif bin/run_transform
+source env.sh; docker-compose run bods_ingester_gleif bash -c "source venv/bin/activate && bin/run_transform"
