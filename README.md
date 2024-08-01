@@ -91,7 +91,7 @@ bin/transform
 
 ### Testing
 
-Note it is possible to run the pipeline on a local machine for tetsing purposes
+Note it is possible to run the pipeline on a local machine for testing purposes
 but this will degrade performance, possibly very significantly depending on the
 the bandwidth of the network connection between the machine and the data center
 where the Kinesis streams are hosted.
