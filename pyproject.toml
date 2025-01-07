@@ -1,0 +1,31 @@
+[project]
+name="bodsgleifpipeline"
+description = "Pipeline for producing Beneficial Ownership Data Standard (BODS) statements from data in the Global Legal Entity Identifier Foundation (GLEIF) database."
+version = "0.1"
+requires-python = '>=3.10'
+#dependencies = ["bodspipelines @ git+https://github.com/openownership/bodspipelines.git@bods_0_4_new#egg=bodspipelines"]
+readme="README.md"
+license = {text= "AGPLv3"}
+authors = [
+  { name = 'Open Ownership', email='code@opendataservices.coop' },
+]
+
+[project.urls]
+homepage = 'https://github.com/openownership/bods-gleif-pipeline'
+documentation = 'https://github.com/openownership/bods-gleif-pipeline'
+repository = 'https://github.com/openownership/bods-gleif-pipeline'
+
+[tool.setuptools]
+packages = ["bodsgleifpipeline"]
+py-modules = ["__init__"]
+
+[tool.ruff]
+lint.select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]

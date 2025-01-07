@@ -1,8 +1,6 @@
-version: '3.7'
-
 services:
-  bods_ingester_gleif:
-    image: bods_ingester_gleif:latest
+  bods_pipeline_gleif:
+    image: bods_pipeline_gleif:latest
     environment:
       - BODS_AWS_REGION
       - BODS_AWS_ACCESS_KEY_ID
@@ -13,17 +11,14 @@ services:
       - GLEIF_KINESIS_STREAM
       - BODS_KINESIS_STREAM
       - LOCAL_DATA_DIRECTORY
-      - REDIS_HOST
-      - REDIS_PORT
     volumes:
       - ./code:/app/venv
       - ./data:/app/data
     restart: always
     depends_on:
-      - bods_ingester_gleif_es
-#      - bods_ingester_gleif_redis
+      - bods_pipeline_gleif_es
 
-  bods_ingester_gleif_es:
+  bods_pipeline_gleif_es:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
     environment:
       - 'discovery.type=single-node'
@@ -35,11 +30,3 @@ services:
       - esdata:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
-
-#  bods_ingester_gleif_redis:
-#    image: redis:latest
-#    command: redis-server --port 6380 --appendonly yes --protected-mode no
-#    volumes:
-#        - ./redis-data:/data
-#    ports:
-#      - "6380:6380"
