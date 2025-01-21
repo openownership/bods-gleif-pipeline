@@ -14,7 +14,7 @@ def run(entry, stage):
 def pipeline():
     os.chdir('/app')
     Path('data').mkdir(exist_ok=True)
-    from bodspipelines.pipelines.gleif import config
+    from bodsgleifpipeline import config
     run(config.pipeline.process, "transform")
 
 if __name__ == "__main__":

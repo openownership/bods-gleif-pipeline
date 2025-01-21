@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from bodspipelines.pipelines.gleif import config
+from bodsgleifpipeline import config
 
 if __name__ == "__main__":
     config.setup()

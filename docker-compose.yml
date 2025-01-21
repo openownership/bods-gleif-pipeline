@@ -8,12 +8,15 @@ services:
       - ELASTICSEARCH_HOST
       - ELASTICSEARCH_PORT
       - ELASTICSEARCH_PROTOCOL
-      - GLEIF_KINESIS_STREAM
+      - SOURCE_KINESIS_STREAM
       - BODS_KINESIS_STREAM
       - LOCAL_DATA_DIRECTORY
+      - KINESIS_STATUS_DIRECTORY
     volumes:
-      - ./code:/app/venv
+      - ./venv:/app/venv
+      - ./src:/app/src
       - ./data:/app/data
+      - ./status:/app/status
     restart: always
     depends_on:
       - bods_pipeline_gleif_es
@@ -30,3 +33,11 @@ services:
       - esdata:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
+
+volumes:
+  esdata:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./esdata
