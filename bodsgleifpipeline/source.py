@@ -42,7 +42,7 @@ class GLEIFSource():
 
     def identify_item(self, item):
         """Identify type of GLEIF data"""
-        print("Item:", item)
+        #print("Item:", item)
         if 'Entity' in item:
             return 'entity'
         elif 'Relationship' in item:
@@ -101,7 +101,7 @@ class GLEIFSource():
         if item_type == 'entity':
             return item["Registration"]["RegistrationStatus"] in ('RETIRED', 'DUPLICATE', 'ANNULLED')
         elif item_type == 'relationship':
-            print("item_closed:", item)
+            #print("item_closed:", item)
             if "Extension" in item and "Deletion" in item["Extension"]:
                 return True
             return item["Registration"]["RegistrationStatus"] in ('RETIRED', 'DUPLICATE', 'ANNULLED')
@@ -153,7 +153,7 @@ class GLEIFSource():
             return None
 
     def _extract_address(self, address, data):
-        print("Data:", data)
+        #print("Data:", data)
         if 'FirstAddressLine' in data:
             address['address1'] = data['FirstAddressLine']
         if 'AdditionalAddressLine' in data:
@@ -206,6 +206,7 @@ class GLEIFSource():
     def interest_start_date(self, item) -> dict:
         """Get interest start date"""
         start_date = False
+        interestStartDate = False
         if 'RelationshipPeriods' in item['Relationship']:
             periods = item['Relationship']['RelationshipPeriods']
             for period in periods:
@@ -218,7 +219,7 @@ class GLEIFSource():
             if not interestStartDate: interestStartDate = ""
         else:
             if not interestStartDate: interestStartDate = start_date
-        return interestStartDate.split("T")[0]
+        return interestStartDate.split("T")[0] if interestStartDate else ""
 
     def _interest_level(self, item, default):
         """Calculate interest level"""
@@ -249,8 +250,9 @@ class GLEIFSource():
         """Get source type"""
         item_type = self.identify_item(item)
         if item_type == "entity":
-            return (['officialRegister'] if not item['Registration']['ValidationSources'] ==
-                 'FULLY_CORROBORATED' else ['officialRegister', 'verified'])
+            return (['officialRegister', 'verified'] if 'ValidationSources' in item['Registration']
+                  and item['Registration']['ValidationSources'] ==
+                 'FULLY_CORROBORATED' else ['officialRegister'])
         else:
             return ['officialRegister']
 

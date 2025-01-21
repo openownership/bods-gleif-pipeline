@@ -69,7 +69,7 @@ gleif_storage = ElasticsearchClient(indexes=gleif_index_properties)
 
 # GLEIF data: Store in Easticsearch and output new to Kinesis stream
 output_new = NewOutput(storage=Storage(storage=gleif_storage),
-                       output=KinesisOutput(stream_name=os.environ.get('GLEIF_KINESIS_STREAM')))
+                       output=KinesisOutput(stream_name=os.environ.get('SOURCE_KINESIS_STREAM')))
 
 # Definition of GLEIF data pipeline ingest stage
 ingest_stage = Stage(name="ingest",
@@ -80,11 +80,12 @@ ingest_stage = Stage(name="ingest",
 
 # Kinesis stream of GLEIF data from ingest stage
 gleif_source = Source(name="gleif",
-                      origin=KinesisInput(stream_name=os.environ.get('GLEIF_KINESIS_STREAM')),
+                      origin=KinesisInput(stream_name=os.environ.get('SOURCE_KINESIS_STREAM')),
                       datatype=JSONData())
 
 # Easticsearch storage for BODS data
-bods_storage = ElasticsearchClient(indexes=bods_index_properties)
+bods_storage = ElasticsearchClient(indexes=bods_index_properties,
+                                   index_just_id = ["entity", "person", "relationship"])
 
 # BODS data: Store in Easticsearch and output new to Kinesis stream
 bods_output_new = NewOutput(storage=Storage(storage=bods_storage),
