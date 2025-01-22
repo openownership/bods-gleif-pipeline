@@ -1,4 +1,6 @@
-from bodspipelines.infrastructure.schemes.data import load_data, get_scheme
+from bodspipelines.infrastructure.utils import build_date, current_date_iso
+from bodspipelines.infrastructure.schemes.data import get_scheme
+from .codelists.data import load_data, search_data
 
 def relationship_type(item):
     rtype = item["Relationship"]["RelationshipType"]
@@ -38,7 +40,8 @@ def exception_unspecified(item):
 class GLEIFSource():
     """GLEIF specific methods"""
     def __init__(self):
-        self.scheme_data = load_data()
+        self.scheme_data = load_data("2022-03-23_ra_list_v1.7.csv")
+        self.legal_forms = load_data("2023-09-28-elf-code-list-v1.5.csv")
 
     def identify_item(self, item):
         """Identify type of GLEIF data"""
@@ -125,6 +128,10 @@ class GLEIFSource():
         """Get scheme name"""
         return 'Global Legal Entity Identifier Index'
 
+    def scheme_url(self, item):
+        """Scheme url"""
+        return "https://www.gleif.org/en/about-lei/introducing-the-legal-entity-identifier-lei"
+
     def identifier(self, item) -> str:
         """Get entity identifier"""
         return item['LEI']
@@ -149,6 +156,17 @@ class GLEIFSource():
         """Creation date for GLEIF item"""
         if "EntityCreationDate" in item['Entity']:
             return item['Entity']["EntityCreationDate"]
+        else:
+            return None
+
+    def dissolution_date(self, item):
+        """Dissolution date for item"""
+        if "LegalEntityEvents" in item['Entity']:
+            for event in item['Entity']["LegalEntityEvents"]:
+                if (event["LegalEntityEventType"] == "DISSOLUTION" and
+                    "LegalEntityEventEffectiveDate" in event):
+                         return build_date(event["LegalEntityEventEffectiveDate"])
+            return None
         else:
             return None
 
@@ -238,6 +256,13 @@ class GLEIFSource():
         interestLevel = "unknown"
         return interestLevel
 
+    def interest_types(self, item):
+        """Get interest types"""
+        return {"otherInfluenceOrControl": {"maximum": None,
+                      "minimum": None,
+                      "exclusiveMinimum": None,
+                      "exclusiveMaximum": None}}
+
     def interest_details(self, item):
         """Get interest details"""
         item_type = self.identify_item(item)
@@ -259,7 +284,7 @@ class GLEIFSource():
     @property
     def source_description(self) -> str:
         """Get source description"""
-        return 'GLEIF'
+        return {'name': 'GLEIF', 'uri': 'https://www.gleif.org'}
 
     @property
     def source_url(self) -> str:
@@ -274,3 +299,32 @@ class GLEIFSource():
     def status(self, item) -> str:
         """Get GLEIF entity status"""
         return item['Entity']['EntityStatus']
+
+    def item_link(self, item, item_type):
+        """Link to more info on entity"""
+        if item_type == "entity":
+            if "LEI" in item and item["LEI"]:
+                return f'https://search.gleif.org/#/record/{item["LEI"]}'
+            else:
+                return None
+        else:
+            return None
+
+    def retrived_date(self, item):
+        """Date that data was retrieve"""
+        if "ContentDate" in item:
+            return item["ContentDate"].split("T")[0]
+        else:
+            return current_date_iso()
+
+    def entity_details(self, item):
+        """Link to more info on entity"""
+        if 'LegalForm' in item['Entity'] and 'EntityLegalFormCode' in item['Entity']['LegalForm']:
+            legal_form = search_data(self.legal_forms, 0, item['Entity']['LegalForm']['EntityLegalFormCode'])
+            if legal_form[5]:
+                return legal_form[5]
+        return None
+
+    def has_public_listing(self, item):
+        """Does entity have public listing"""
+        return None
