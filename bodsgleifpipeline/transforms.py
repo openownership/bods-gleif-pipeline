@@ -6,9 +6,9 @@ class AddContentDate:
 
     async def process(self, item, item_type, header, mapping={}, updates=False):
         """Process item"""
-        if self.identify: item_type = self.identify(item)
-        if item_type == 'repex':
-            item["ContentDate"] = header["ContentDate"]
+        #if self.identify: item_type = self.identify(item)
+        #if item_type == 'repex':
+        item["ContentDate"] = header["ContentDate"]
         yield item
 
 class RemoveEmptyExtension:

@@ -89,7 +89,8 @@ lei_properties = {'LEI': {'type': 'text'},
                                               'OtherValidationAuthorities': {'type': 'object',
                                                                                      'properties': {'ValidationAuthorityID': {'type': 'text'},
                                                                                                     'OtherValidationAuthorityID': {'type': 'text'},
-                                                                                                    'ValidationAuthorityEntityID': {'type': 'text'}}}}}}
+                                                                                                    'ValidationAuthorityEntityID': {'type': 'text'}}}}},
+              'ContentDate': {'type': 'text'}}
 
 rr_properties = {'Relationship': {'type': 'object', 
                                    'properties': {'StartNode': {'type': 'object', 
@@ -125,6 +126,7 @@ rr_properties = {'Relationship': {'type': 'object',
                                                                                          'OtherValidationAuthorityID': {'type': 'text'}, 
                                                                                          'ValidationAuthorityEntityID': {'type': 'text'}}}
                                                   }},
+                   'ContentDate': {'type': 'text'},
                    'Extension': {'type': 'object',
                                  'properties': {'Deletion': {'type': 'object',
                                                              'properties': {'DeletedAt': {'type': 'text'}}}}}
