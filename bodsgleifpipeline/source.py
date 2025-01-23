@@ -89,13 +89,13 @@ class GLEIFSource():
 
     def item_updated(self, item):
         """statementDate for GLEIF item"""
-        item_type = self.identify_item(item)
-        if item_type == 'entity':
-            return item["Registration"]["LastUpdateDate"]
-        elif item_type == 'relationship':
-            return item["Registration"]["LastUpdateDate"]
-        elif item_type == 'exception':
-            return item["ContentDate"]
+        #item_type = self.identify_item(item)
+        #if item_type == 'entity':
+        #    return item["Registration"]["LastUpdateDate"]
+        #elif item_type == 'relationship':
+        #    return item["Registration"]["LastUpdateDate"]
+        #elif item_type == 'exception':
+        return item["ContentDate"]
 
     def item_closed(self, item):
         """Is GLEIF item closed?"""
@@ -299,6 +299,10 @@ class GLEIFSource():
     def status(self, item) -> str:
         """Get GLEIF entity status"""
         return item['Entity']['EntityStatus']
+
+    def registration_status(self, item) -> str:
+        """Get GLEIF registration status"""
+        return item["Registration"]["RegistrationStatus"]
 
     def item_link(self, item, item_type):
         """Link to more info on entity"""
