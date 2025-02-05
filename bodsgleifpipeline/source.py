@@ -296,9 +296,9 @@ class GLEIFSource():
         """Get GLEIF entity name"""
         return 'LEI'
 
-    def status(self, item) -> str:
+    def entity_status(self, item) -> str:
         """Get GLEIF entity status"""
-        return item['Entity']['EntityStatus']
+        return None #item['Entity']['EntityStatus']
 
     def registration_status(self, item) -> str:
         """Get GLEIF registration status"""
