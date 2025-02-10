@@ -71,6 +71,17 @@ class GLEIFSource():
             etype = exception_type(item)
             return f"XI-LEI-RE-{etype}-{start}"
 
+    def relationship_id(self, item):
+        """Identifier for GLEIF relationship"""
+        if "Relationship" in item:
+            start = item["Relationship"]["StartNode"]['NodeID']
+            rtype = relationship_type(item)
+            return f"XI-LEI-RR-{rtype}-{start}"
+        else:
+            start = item["LEI"]
+            rtype = exception_type(item)
+            return f"XI-LEI-RR-{rtype}-{start}"
+
     def exception_id(self, record_id):
         """Relationship coresponding recordId for exception"""
         #return record_id.replace('-RR-', '-RE-')
@@ -115,26 +126,36 @@ class GLEIFSource():
         """Name for GLEIF item"""
         return item['Entity']['LegalName']
 
+    def alternate_names(self, item, item_type):
+        """List alternate names"""
+        names = []
+        if "OtherEntityNames" in item['Entity']:
+            for name in item['Entity']["OtherEntityNames"]:
+                if "OtherEntityName" in name and name["OtherEntityName"]:
+                    names.append(name["OtherEntityName"])
+        return names
+
     def jurisdiction(self, item):
         return item['Entity']['LegalJurisdiction']
 
-    @property
-    def scheme(self) -> str:
+    def scheme(self, item, item_type) -> str:
         """Get scheme"""
-        return 'XI-LEI'
+        if item_type == "entity":
+            return 'XI-LEI', 'Global Legal Entity Identifier Index', "https://www.gleif.org/en/about-lei/introducing-the-legal-entity-identifier-lei"
 
-    @property
-    def scheme_name(self) -> str:
-        """Get scheme name"""
-        return 'Global Legal Entity Identifier Index'
+    #@property
+    #def scheme_name(self) -> str:
+    #    """Get scheme name"""
+    #    return 'Global Legal Entity Identifier Index'
 
-    def scheme_url(self, item):
-        """Scheme url"""
-        return "https://www.gleif.org/en/about-lei/introducing-the-legal-entity-identifier-lei"
+    #def scheme_url(self, item):
+    #    """Scheme url"""
+    #    return "https://www.gleif.org/en/about-lei/introducing-the-legal-entity-identifier-lei"
 
-    def identifier(self, item) -> str:
+    def identifier(self, item, item_type) -> str:
         """Get entity identifier"""
-        return item['LEI']
+        if item_type == "entity":
+            return item['LEI']
 
     def additional_identifiers(self, item) -> list:
         """Get list of additional identifiers"""
@@ -142,13 +163,15 @@ class GLEIFSource():
             and "RegistrationAuthorityID" in item['Entity']["RegistrationAuthority"]
             and "RegistrationAuthorityEntityID" in item['Entity']["RegistrationAuthority"]):
             authority = item['Entity']["RegistrationAuthority"]
-            scheme_code, scheme_name = get_scheme(authority["RegistrationAuthorityID"],
+            scheme_code, scheme_name, scheme_url = get_scheme(authority["RegistrationAuthorityID"],
                                                   self.scheme_data,
                                                   country_code=item['Entity']['LegalJurisdiction'])
             #print(authority, scheme_code, scheme_name)
-            return [{'id': authority["RegistrationAuthorityEntityID"],
-                    'scheme': scheme_code,
-                    'schemeName': scheme_name}]
+            identifier = {'id': authority["RegistrationAuthorityEntityID"],
+                          'scheme': scheme_code,
+                          'schemeName': scheme_name}
+            if scheme_url: identifier['uri'] = scheme_url
+            return [identifier]
         else:
             return []
 
