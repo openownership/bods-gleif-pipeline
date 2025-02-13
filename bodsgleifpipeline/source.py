@@ -108,19 +108,22 @@ class GLEIFSource():
         #elif item_type == 'exception':
         return item["ContentDate"]
 
-    def item_closed(self, item):
+    def item_closed(self, item, item_type):
         """Is GLEIF item closed?"""
-        item_type = self.identify_item(item)
+        #item_type = self.identify_item(item)
         #print(item)
         if item_type == 'entity':
             return item["Registration"]["RegistrationStatus"] in ('RETIRED', 'DUPLICATE', 'ANNULLED')
         elif item_type == 'relationship':
             #print("item_closed:", item)
-            if "Extension" in item and "Deletion" in item["Extension"]:
-                return True
-            return item["Registration"]["RegistrationStatus"] in ('RETIRED', 'DUPLICATE', 'ANNULLED')
-        elif item_type == 'exception':
-            return True if "Extension" in item and "Deletion" in item["Extension"] else False
+            if 'Relationship' in item:
+                if "Extension" in item and "Deletion" in item["Extension"]:
+                    return True
+                return item["Registration"]["RegistrationStatus"] in ('RETIRED', 'DUPLICATE', 'ANNULLED')
+            else:
+                return True if "Extension" in item and "Deletion" in item["Extension"] else False
+        #elif item_type == 'exception':
+        #    return True if "Extension" in item and "Deletion" in item["Extension"] else False
 
     def name(self, item, item_type):
         """Name for GLEIF item"""
