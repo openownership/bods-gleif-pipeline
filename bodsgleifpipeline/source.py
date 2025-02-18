@@ -108,6 +108,25 @@ class GLEIFSource():
         #elif item_type == 'exception':
         return item["ContentDate"]
 
+    def statement_id(self, item, item_type):
+        """Unhashed statementId for GLEIF item"""
+        updated = self.item_updated(item)
+        if item_type == 'entity':
+            start = item["LEI"]
+            return f"XI-LEI-{start}-{updated}"
+        elif item_type == 'relationship':
+            start = item["Relationship"]["StartNode"]['NodeID']
+            end = item["Relationship"]["EndNode"]['NodeID']
+            rtype = relationship_type(item)
+            raw_rtype = item["Relationship"]['RelationshipType']
+            return f"XI-LEI-RR-{rtype}-{start}-{end}-{raw_rtype}-{updated}"
+        else:
+            start = item["LEI"]
+            rtype = exception_type(item)
+            reason = item['ExceptionReason']
+            ref = item['ExceptionReference'] if "ExceptionReference" in item else 'None'
+            return f"XI-LEI-RR-{rtype}-{start}-{reason}-{ref}-{updated}"
+
     def item_closed(self, item, item_type):
         """Is GLEIF item closed?"""
         #item_type = self.identify_item(item)
