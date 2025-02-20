@@ -132,15 +132,15 @@ class GLEIFSource():
         #item_type = self.identify_item(item)
         #print(item)
         if item_type == 'entity':
-            return item["Registration"]["RegistrationStatus"] in ('RETIRED', 'DUPLICATE', 'ANNULLED')
+            return item["Registration"]["RegistrationStatus"] in ('RETIRED', 'DUPLICATE', 'ANNULLED'), "deletion"
         elif item_type == 'relationship':
             #print("item_closed:", item)
             if 'Relationship' in item:
                 if "Extension" in item and "Deletion" in item["Extension"]:
-                    return True
-                return item["Registration"]["RegistrationStatus"] in ('RETIRED', 'DUPLICATE', 'ANNULLED')
+                    return True, "deletion"
+                return item["Registration"]["RegistrationStatus"] in ('RETIRED', 'DUPLICATE', 'ANNULLED'), "deletion"
             else:
-                return True if "Extension" in item and "Deletion" in item["Extension"] else False
+                return True if "Extension" in item and "Deletion" in item["Extension"] else False, "deletion"
         #elif item_type == 'exception':
         #    return True if "Extension" in item and "Deletion" in item["Extension"] else False
 
@@ -377,3 +377,11 @@ class GLEIFSource():
     def has_public_listing(self, item):
         """Does entity have public listing"""
         return None
+
+    def annotation_description(self, reason, record_type, record_id):
+        """Descriptions for annotations"""
+        if reason == "replacement":
+            #record_type = "relationship" if "Relationship" in item else "exception"
+            return f"Statement closed due to a new GLEIF {record_type} ({record_id}) replacing this record"
+        elif reason == "deletion":
+            return "Statement closed due to deletion of GLEIF record"
