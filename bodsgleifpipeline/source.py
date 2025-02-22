@@ -381,7 +381,7 @@ class GLEIFSource():
     def annotation_description(self, reason, record_type, record_id):
         """Descriptions for annotations"""
         if reason == "replacement":
-            #record_type = "relationship" if "Relationship" in item else "exception"
+            record_type = "relationship" if "-RR-" in record_id else "exception"
             return f"Statement closed due to a new GLEIF {record_type} ({record_id}) replacing this record"
         elif reason == "deletion":
             return "Statement closed due to deletion of GLEIF record"
