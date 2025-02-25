@@ -132,15 +132,17 @@ class GLEIFSource():
         #item_type = self.identify_item(item)
         #print(item)
         if item_type == 'entity':
-            return item["Registration"]["RegistrationStatus"] in ('RETIRED', 'DUPLICATE', 'ANNULLED'), "deletion"
+            return item["Registration"]["RegistrationStatus"] in ('RETIRED', 'DUPLICATE', 'ANNULLED'), "retired"
         elif item_type == 'relationship':
             #print("item_closed:", item)
             if 'Relationship' in item:
                 if "Extension" in item and "Deletion" in item["Extension"]:
                     return True, "deletion"
-                return item["Registration"]["RegistrationStatus"] in ('RETIRED', 'DUPLICATE', 'ANNULLED'), "deletion"
+                return item["Registration"]["RegistrationStatus"] in ('RETIRED', 'DUPLICATE', 'ANNULLED'), "retired"
             else:
-                return True if "Extension" in item and "Deletion" in item["Extension"] else False, "deletion"
+                if "Extension" in item and "Deletion" in item["Extension"]:
+                    return True, "deletion"
+                return False, None
         #elif item_type == 'exception':
         #    return True if "Extension" in item and "Deletion" in item["Extension"] else False
 
@@ -385,3 +387,5 @@ class GLEIFSource():
             return f"Statement closed due to a new GLEIF {record_type} ({record_id}) replacing this record"
         elif reason == "deletion":
             return "Statement closed due to deletion of GLEIF record"
+        elif reason == "retired":
+            return "Statement closed due to retirement of GLEIF record"
